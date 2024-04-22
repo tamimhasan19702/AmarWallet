@@ -6,7 +6,7 @@ sqlite3 mySQLiteDB.db
 CREATE TABLE IF NOT EXISTS "Categories" (
     "id"	INTEGER PRIMARY KEY AUTOINCREMENT,
    name TEXT NOT NULL,
-   type TEXT NOT NULL CHECK (type IN ('income', 'expense'))
+   type TEXT NOT NULL CHECK (type IN ('Expense', 'Income'))
 );
 
 -- Transections
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "Transactions" (
    amount REAL NOT NULL,
    date INTEGER NOT NULL,
    description TEXT,
-   type TEXT NOT NULL CHECK (type IN ('income', 'expense'))
+   type TEXT NOT NULL CHECK (type IN ('Expense', 'Income'))
    Foreign Key (category_id) REFERENCES Categories(id)
 );
 
