@@ -22,8 +22,14 @@ const HomeScreen = () => {
     const result = await db.getAllAsync<Transaction>(
       "SELECT * FROM Transactions ORDER By date DESC"
     );
-    console.log(result);
+
     setTransections(result);
+
+    const CategoriesResult = await db.getAllAsync<Category>(
+      "SELECT * FROM Categories"
+    );
+
+    setCategory(CategoriesResult);
   }
 
   async function deleteTransection(id: number) {
