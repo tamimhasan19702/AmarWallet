@@ -3,6 +3,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Category, Transaction } from "./types";
+import TransectionListItem from "./TransectionListItem";
 
 interface TransectionListProps {
   transections: Transaction[];
@@ -22,9 +23,12 @@ const TransectionList = ({
           key={transection.id}
           onPress={() => deleteTransections(transection.id)}
           activeOpacity={0.7}>
-          <Text>
-            {transection.description} - {transection.amount}
-          </Text>
+          <TransectionListItem
+            transection={transection}
+            categoryInfo={categories.find(
+              (category) => category.id === transection.category_id
+            )}
+          />
         </TouchableOpacity>
       ))}
     </View>
