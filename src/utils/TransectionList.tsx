@@ -17,7 +17,7 @@ const TransectionList = ({
   deleteTransections,
 }: TransectionListProps) => {
   return (
-    <View>
+    <View style={{ gap: 18 }}>
       {transections.map((transection) => (
         <TouchableOpacity
           key={transection.id}
