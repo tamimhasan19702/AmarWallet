@@ -2,13 +2,19 @@
 
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Category, Transaction } from "../utils/types";
+import { Category, Transaction, TransactionsByMonth } from "../utils/types";
 import { useSQLiteContext } from "expo-sqlite/next";
 import TransectionList from "../utils/TransectionList";
+import TransectionSummary from "../utils/TransectionSummary";
 
 const HomeScreen = () => {
   const [category, setCategory] = useState<Category[]>([]);
   const [transections, setTransections] = useState<Transaction[]>([]);
+  const [transectionByMonth, setTransectionByMonth] =
+    useState<TransactionsByMonth>({
+      totalExpenses: 0,
+      totalIncome: 0,
+    });
 
   const db = useSQLiteContext();
 
@@ -39,6 +45,10 @@ const HomeScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={{ padding: 15 }}>
+      <TransectionSummary
+        totalExpenses={transectionByMonth.totalExpenses}
+        totalIncome={transectionByMonth.totalIncome}
+      />
       <TransectionList
         categories={category}
         transections={transections}
