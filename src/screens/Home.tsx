@@ -8,9 +8,9 @@ import TransectionList from "../utils/TransectionList";
 import TransectionSummary from "../utils/TransectionSummary";
 
 const HomeScreen = () => {
-  const [category, setCategory] = useState<Category[]>([]);
-  const [transections, setTransections] = useState<Transaction[]>([]);
-  const [transectionByMonth, setTransectionByMonth] =
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactionsByMonth, setTransactionsByMonth] =
     useState<TransactionsByMonth>({
       totalExpenses: 0,
       totalIncome: 0,
@@ -26,16 +26,36 @@ const HomeScreen = () => {
 
   async function getData() {
     const result = await db.getAllAsync<Transaction>(
-      "SELECT * FROM Transactions ORDER By date DESC"
+      `SELECT * FROM Transactions ORDER BY date DESC;`
     );
+    setTransactions(result);
 
-    setTransections(result);
-
-    const CategoriesResult = await db.getAllAsync<Category>(
-      "SELECT * FROM Categories"
+    const categoriesResult = await db.getAllAsync<Category>(
+      `SELECT * FROM Categories;`
     );
+    setCategories(categoriesResult);
 
-    setCategory(CategoriesResult);
+    const now = new Date();
+
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    endOfMonth.setMilliseconds(endOfMonth.getMilliseconds() - 1);
+
+    const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
+    const endOfMonthTimestamp = Math.floor(endOfMonth.getTime() / 1000);
+
+    const transactionsByMonth = await db.getAllAsync<TransactionsByMonth>(
+      `
+      SELECT
+        COALESCE(SUM(CASE WHEN type = 'Expense' THEN amount ELSE 0 END), 0) AS totalExpenses,
+        COALESCE(SUM(CASE WHEN type = 'Income' THEN amount ELSE 0 END), 0) AS totalIncome
+      FROM Transactions
+      WHERE date >= ? AND date <= ?;
+    `,
+      [startOfMonthTimestamp, endOfMonthTimestamp]
+    );
+    setTransactionsByMonth(transactionsByMonth[0]);
   }
 
   async function deleteTransection(id: number) {
@@ -46,12 +66,12 @@ const HomeScreen = () => {
   return (
     <ScrollView contentContainerStyle={{ padding: 15 }}>
       <TransectionSummary
-        totalExpenses={transectionByMonth.totalExpenses}
-        totalIncome={transectionByMonth.totalIncome}
+        totalExpenses={transactionsByMonth.totalExpenses}
+        totalIncome={transactionsByMonth.totalIncome}
       />
       <TransectionList
-        categories={category}
-        transections={transections}
+        categories={categories}
+        transections={transactions}
         deleteTransections={deleteTransection}
       />
     </ScrollView>

@@ -1,6 +1,6 @@
 /** @format */
 
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { Category, Transaction } from "./types";
 import Card from "./ui/Card";
@@ -14,11 +14,13 @@ import TransectionInfo from "./TransectionInfo";
 interface TransectionListItemProps {
   transection: Transaction;
   categoryInfo: Category | undefined;
+  deleteTransections: (id: number) => Promise<void>;
 }
 
 const TransectionListItem = ({
   transection,
   categoryInfo,
+  deleteTransections,
 }: TransectionListItemProps) => {
   const iconName = transection.type === "Income" ? "caretup" : "caretdown";
   const color = transection.type === "Income" ? "green" : "red";
@@ -48,6 +50,12 @@ const TransectionListItem = ({
           id={transection.id}
           description={transection.description}
         />
+        <TouchableOpacity
+          key={transection.id}
+          onPress={() => deleteTransections(transection.id)}
+          activeOpacity={0.7}>
+          <AntDesign name="delete" size={24} color="red" />
+        </TouchableOpacity>
       </View>
     </Card>
   );

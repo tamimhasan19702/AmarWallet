@@ -19,18 +19,21 @@ const TransectionList = ({
   return (
     <View style={{ gap: 18 }}>
       {transections.map((transection) => (
-        <TouchableOpacity
-          key={transection.id}
-          onPress={() => deleteTransections(transection.id)}
-          activeOpacity={0.7}>
+        <View>
           <TransectionListItem
             transection={transection}
             categoryInfo={categories.find(
               (category) => category.id === transection.category_id
             )}
+            deleteTransections={deleteTransections}
           />
-        </TouchableOpacity>
+        </View>
       ))}
+      {!transections.length && (
+        <Text style={{ textAlign: "center", fontSize: 20, marginTop: 20 }}>
+          No transections found 😅
+        </Text>
+      )}
     </View>
   );
 };
