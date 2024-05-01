@@ -4,6 +4,11 @@ import { useSQLiteContext } from "expo-sqlite/next";
 import { Transaction } from "../utils/types";
 import { useEffect, useState } from "react";
 import { Category } from "../utils/types";
+import { TextInput, View, Text } from "react-native";
+import AddButton from "./ui/AddButton";
+import Card from "./ui/Card";
+import SegmentedControl from "@react-native-segmented-control/segmented-control";
+
 
 export default function AddTransactions({
   insertTransaction,
@@ -61,5 +66,32 @@ export default function AddTransactions({
     setIsAddingTransaction(false);
   }
 
-  return {};
+  return (
+    <View style={{ marginBottom: 15}}>
+      {isAddingTransaction ? (
+        <View>
+          <Card>
+            <TextInput
+            placeholder="$Amount"
+            style={{fontSize: 32, marginBottom: 15, fontWeight: "800"}}
+            keyboardType="numeric"
+            onChangeText={(text) => {
+              const numericValue = text.replace(/[^0-9]/g, "");
+              setAmount(numericValue)
+                        }}
+            />
+            <TextInput placeholder="Description"
+            style={{ marginBottom: 15}}
+            onChangeText={setDescription}
+            />
+            <Text style={{marginBottom: 6}}>Select a entry type</Text>
+            <SegmentedControl
+            values={["Expense", "Income"]}
+            style={{marginBottom:15}}
+            />
+          </Card>
+        </View>
+      )}
+    </View>
+  );
 }
