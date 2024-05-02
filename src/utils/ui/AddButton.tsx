@@ -23,7 +23,7 @@ const AddButton = ({
       }}>
       <MaterialIcons name="add-circle-outline" size={24} color={"#007bff"} />
       <Text style={{ fontWeight: "700", marginLeft: 5, color: "#007bff" }}>
-        New Entry
+        নতুন ট্রান্সকেশন
       </Text>
     </TouchableOpacity>
   );

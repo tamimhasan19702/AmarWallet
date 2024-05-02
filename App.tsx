@@ -12,6 +12,8 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./src/screens/Home";
+import Navigation from "./src/utils/Navigation";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -49,28 +51,22 @@ export default function App() {
     );
 
   return (
-    <NavigationContainer>
-      <Suspense
-        fallback={
-          <View style={{ flex: 1 }}>
-            <ActivityIndicator size={"large"} />
-            <Text>Loading Database...</Text>
-          </View>
-        }>
-        <SQLiteProvider databaseName="mySQLiteDB.db" useSuspense>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Amar Wallet 💰"
-              component={HomeScreen}
-              options={{
-                headerTitle: "Amar Wallet 💰",
-                headerLargeTitle: true,
-              }}
-            />
-          </Stack.Navigator>
-        </SQLiteProvider>
-      </Suspense>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar style="auto" />
+      <NavigationContainer>
+        <Suspense
+          fallback={
+            <View style={{ flex: 1 }}>
+              <ActivityIndicator size={"large"} />
+              <Text>Loading Database...</Text>
+            </View>
+          }>
+          <SQLiteProvider databaseName="mySQLiteDB.db" useSuspense>
+            <Navigation />
+          </SQLiteProvider>
+        </Suspense>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
 
