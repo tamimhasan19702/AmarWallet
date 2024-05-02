@@ -73,7 +73,7 @@ export default function AddTransactions({
         <View>
           <Card>
             <TextInput
-              placeholder="$Amount"
+              placeholder="৳পরিমাণ"
               style={{ fontSize: 32, marginBottom: 15, fontWeight: "bold" }}
               keyboardType="numeric"
               onChangeText={(text) => {
@@ -83,11 +83,11 @@ export default function AddTransactions({
               }}
             />
             <TextInput
-              placeholder="Description"
+              placeholder="বিবরণ"
               style={{ marginBottom: 15 }}
               onChangeText={setDescription}
             />
-            <Text style={{ marginBottom: 6 }}>Select a entry type</Text>
+            <Text style={{ marginBottom: 6 }}>এন্ট্রি টাইপ নির্বাচন করুন</Text>
             <SegmentedControl
               values={["Expense", "Income"]}
               style={{ marginBottom: 15 }}
